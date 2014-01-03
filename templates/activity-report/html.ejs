@@ -1,0 +1,29 @@
+<h1><%= activity.user ? activity.user+'\'s' : 'Global '%> activity</h1>
+<h2>Summary</h2>
+<ul>
+<%
+    for (key in activity.types){
+        %>
+        <li><b><%=key%></b> - <%=activity.types[key]%></li>
+    <%
+    }
+%>
+</ul>
+<h2>Projects</h2>
+<ul>
+<%
+    for (key in activity.projects){
+        %>
+        <li><b><%=key%></b> - <%=activity.projects[key]%></li>
+    <%
+    }
+%>
+</ul>
+<h2>Details</h2>
+<ul>
+<%
+    activity.list.forEach(function(item){%>
+        <li><a href="<%=item.link%>"><%=item.title%></a></li>
+    <%});
+%>
+</ul>

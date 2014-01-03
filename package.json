@@ -1,0 +1,23 @@
+{
+  "name": "jira-digests",
+  "version": "0.0.1",
+  "description": "Extract digests from an onDemand JIRA instance, and sends them by email",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@bitbucket.org/nicolsc/jira-digests.git"
+  },
+  "keywords": [
+    "jira",
+    "digests"
+  ],
+  "author": "nicolsc",
+  "dependencies"  : {
+    "email-templates"   : "0.0.x",
+    "express"           : "3.3.x",
+    "feedparser"        : "0.16.x",
+    "nodemailer"        : "0.6.x",
+    "request"           : "2.30.x",
+    "underscore"        : "1.5.x"
+  }
+}
