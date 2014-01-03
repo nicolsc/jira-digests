@@ -22,7 +22,7 @@ app.get('/activity/:user', function(req, res){
 
 function getActivity(user, req, res){
     var nbResults = process.env.NB_RESULTS || 100;
-    jira.getActivity(user,nbResults, function(err, activity){
+    jira.getActivity({user:user,nbResults:nbResults}, function(err, activity){
         if (err){
             res.status(500);
             res.format({
