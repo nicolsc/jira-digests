@@ -46,15 +46,17 @@ emailTemplates(__dirname+'/templates', function(err, template) {
 			console.log('* processed');
 			if (err){
 				console.error('An error occured', err);
+                sendErrorReport({user:user, type:'error', details:err});
 				return callback();
 			}
 			if (!activity || !activity.length){
 				console.log(user || 'Global', 'no activity');
+                sendErrorReport({user:user, type:'no-activity'});
 				return callback();
 			}
 			//console.log(JSON.stringify(_.countBy(activity, 'project')));
             //return;
-			sendEmail({
+			sendReport({
 				user:user,
 				types: _.countBy(activity,'type'),
                 projects: _.countBy(activity, 'project'),
@@ -64,36 +66,56 @@ emailTemplates(__dirname+'/templates', function(err, template) {
 			return callback();
 		});
 	});
+    function sendErrorReport(data){
+        var subject;
+        var content = '';
+        switch( data.type){
+        case 'no-activity':
+            subject = '☹ Jira - '+data.user+' - no activity';
+            break;
+        case 'error':
+            subject = '☹ Jira - '+data.user+' - error';
+            content = 'Details : '+data.msg;
+            break;
+        default:
+            console.error('Unexpected error type ~'+data.type+'~ // Report not send');
+            return false;
+        }
+        sendEmail('Jira Digests <jira@example.com>',process.env.EMAIL,subject,content,content);
 
-	function sendEmail(data){
+
+    }
+	function sendReport(data){
 		var subject = '☺ Jira Digest - '+data.user;
-		var to = process.env.EMAIL;
-		if (!to){
-			console.error('No process.env.EMAIL set', 'unable to send email');
-			return false;
-		}
 		template('activity-report', {activity:data}, function(err, html, text) {
 			if (err){
 				console.log(err);
 			}
 			else
 			{
-				// console.log(html);
-				transport.sendMail({
-				    from: 'Jira Digests <jira@example.com>',
-					to: to,
-					subject: subject,
-					html: html,
-					text: text
-				},function(error, response) {
-					if(error){
-						console.error('Email not sent', error);
-					}
-					else{
-						console.log('Email sent', response);
-					}
-				});
+                // console.log(html);
+                sendEmail('Jira Digests <jira@example.com>',process.env.EMAIL,subject,html,text);
 			}
 		});
 	}
+    function sendEmail(from,to,subject,html,text){
+        if (!to){
+            console.error('No process.env.EMAIL set', 'unable to send email');
+            return false;
+        }
+        transport.sendMail({
+            from: from,
+            to: to,
+            subject: subject,
+            html: html,
+            text: text
+        },function(error, response) {
+            if(error){
+                console.error('Email not sent', error);
+            }
+            else{
+                console.log('Email sent', response);
+            }
+        });
+    }
 });
