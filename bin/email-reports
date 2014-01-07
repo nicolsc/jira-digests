@@ -1,7 +1,10 @@
 function day_before {
     echo $(($1-86400))
 }
+function to_milliseconds {
+    echo $(($1*1000))
+}
 
 end_date=`date  +%s`
 
-DATE_END=$end_date DATE_START=$(day_before $end_date) node email-digest.js
+DATE_END=$(to_milliseconds $end_date) DATE_START=$(to_milliseconds $(day_before $end_date)) node email-digest.js

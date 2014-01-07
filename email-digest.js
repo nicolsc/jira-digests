@@ -1,12 +1,13 @@
 'use strict';
 
 var _ = require('underscore');
-var request = require('request');
 var nodemailer = require('nodemailer');
 var transport = nodemailer.createTransport('direct');
 var emailTemplates = require('email-templates');
 var jira = require('./modules/jira');
-
+if (process.env.NODE_DEBUG && process.env.NODE_DEBUG.match(/jira/)){
+    console.log('env', process.env);
+}
 emailTemplates(__dirname+'/templates', function(err, template) {
 
 	if (err){
