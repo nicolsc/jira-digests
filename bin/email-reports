@@ -1,1 +1,7 @@
-node email-digest.js
+function day_before {
+    echo $(($1-86400))
+}
+
+end_date=`date  +%s`
+
+DATE_END=$start_date DATE_START=(day_before $end_date) node email-digest.js
