@@ -38,25 +38,23 @@ emailTemplates(__dirname+'/templates', function(err, template) {
     }
 
 	var callback = _.after(users.length, function(){
-		console.log('=== DONE ===');
+		debug('=== DONE ===');
 
 	});
 	_.each(users, function(user){
         params.user = user;
 		jira.getActivity(params, function(err, activity){
-			console.log('* processed');
+			debug('* processed');
 			if (err){
-				console.error('An error occured', err);
+				debug('An error occured', err);
                 sendErrorReport({user:user, type:'error', details:err});
 				return callback();
 			}
 			if (!activity || !activity.length){
-				console.log(user || 'Global', 'no activity');
+				debug(user || 'Global', 'no activity');
                 sendErrorReport({user:user, type:'no-activity'});
 				return callback();
 			}
-			//console.log(JSON.stringify(_.countBy(activity, 'project')));
-            //return;
 			sendReport({
 				user:user,
 				types: _.countBy(activity,'type'),
@@ -118,5 +116,10 @@ emailTemplates(__dirname+'/templates', function(err, template) {
                 console.log('Email sent', response);
             }
         });
+    }
+    function debug(){
+        if (process.env.NODE_DEBUG && process.env.NODE_DEBUG.match(/jira/)){
+            console.log.apply(console, arguments);
+        }
     }
 });
