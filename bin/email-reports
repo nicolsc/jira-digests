@@ -4,4 +4,4 @@ function day_before {
 
 end_date=`date  +%s`
 
-DATE_END=$start_date DATE_START=(day_before $end_date) node email-digest.js
+DATE_END=$end_date DATE_START=$(day_before $end_date) node email-digest.js
