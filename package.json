@@ -12,6 +12,9 @@
     "digests"
   ],
   "author": "nicolsc",
+  "engines": {
+    "node": "0.10.x"
+  },
   "dependencies"  : {
     "email-templates"   : "0.0.x",
     "express"           : "3.3.x",
