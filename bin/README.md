@@ -24,6 +24,8 @@ Simply create a new file in ./bin
 Open the scheduler's dashboard :
 `$ heroku addons:open scheduler`
 
-And follow the instructions there
+And setup your job, as explained in [Heroku documentation](https://devcenter.heroku.com/articles/scheduler#scheduling-jobs)
+
+
 
 
