@@ -22,7 +22,10 @@ emailTemplates(__dirname+'/templates', function(err, template) {
     };
     if (process.env.DATE_START){
         try{
-            params.timestampStart = new Date(process.env.DATE_START).getTime();
+            params.timestampStart = new Date(Number(process.env.DATE_START)).getTime();
+            if (isNaN(params.timestampStart)){
+                delete params.timestampStart;
+            }
         }
         catch(e){
             console.error('Invalid DATE_START', process.env.DATE_START, e.getMessage());
@@ -30,7 +33,10 @@ emailTemplates(__dirname+'/templates', function(err, template) {
     }
 	if (process.env.DATE_END){
         try{
-            params.timestampEnd = new Date(process.env.DATE_END).getTime();
+            params.timestampEnd = new Date(Number(process.env.DATE_END)).getTime();
+            if (isNaN(params.timestampEnd)){
+                delete params.timestampEnd;
+            }
         }
         catch(e){
             console.error('Invalid DATE_END', process.env.DATE_END, e.getMessage());
