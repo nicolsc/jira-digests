@@ -80,7 +80,7 @@ emailTemplates(__dirname+'/templates', function(err, template) {
             break;
         case 'error':
             subject = '☹ Jira - '+data.user+' - error';
-            content = 'Details : '+data.msg;
+            content = 'Details : '+data.details;
             break;
         default:
             console.error('Unexpected error type ~'+data.type+'~ // Report not send');
