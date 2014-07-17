@@ -5,9 +5,7 @@ var nodemailer = require('nodemailer');
 var transport = nodemailer.createTransport('direct');
 var emailTemplates = require('email-templates');
 var jira = require('./modules/jira');
-if (process.env.NODE_DEBUG && process.env.NODE_DEBUG.match(/jira/)){
-    console.log('env', process.env);
-}
+
 emailTemplates(__dirname+'/templates', function(err, template) {
 
 	if (err){
@@ -94,11 +92,10 @@ emailTemplates(__dirname+'/templates', function(err, template) {
 		var subject = '☺ Jira Digest - '+data.user;
 		template('activity-report', {activity:data}, function(err, html, text) {
 			if (err){
-				console.log(err);
+				console.error(err);
 			}
 			else
 			{
-                // console.log(html);
                 sendEmail('Jira Digests <jira@example.com>',process.env.EMAIL,subject,html,text);
 			}
 		});
@@ -108,6 +105,11 @@ emailTemplates(__dirname+'/templates', function(err, template) {
             console.error('No process.env.EMAIL set', 'unable to send email');
             return false;
         }
+
+
+
+        return debug(html);
+
         transport.sendMail({
             from: from,
             to: to,
@@ -119,13 +121,15 @@ emailTemplates(__dirname+'/templates', function(err, template) {
                 console.error('Email not sent', error);
             }
             else{
-                console.log('Email sent', response);
+               debug('Email sent', response);
             }
         });
     }
-    function debug(){
-        if (process.env.NODE_DEBUG && process.env.NODE_DEBUG.match(/jira/)){
-            console.log.apply(console, arguments);
-        }
-    }
 });
+
+
+function debug(){
+    if (process.env.NODE_DEBUG && process.env.NODE_DEBUG.match(/jira/)){
+        console.log.apply(console, arguments);
+    }
+}
