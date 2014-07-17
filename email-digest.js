@@ -107,7 +107,6 @@ emailTemplates(__dirname+'/templates', function(err, template) {
         }
 
 
-
         transport.sendMail({
             from: from,
             to: to,
